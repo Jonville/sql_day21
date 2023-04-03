@@ -1,0 +1,76 @@
+---------------------20230403----------------------
+
+ORACLE JOIN 
+
+	-- 오라클 SQL 에서만 쓸수있음
+	-- INNER JOIN 으로 습관화하자
+
+	예)
+		SELECT *
+		FROM STUDENT S, ENROL E
+		WHERE S.STU_NO = E.STU_NO;
+		
+	
+ORACEL LEFT JOIN
+
+	예)
+		SELECT *
+		FROM T_PRODUCT P , T_PIMAGE I
+		WHERE P.P_ID = I.P_ID(+);     
+			-- (+) 하면 LEFT JOIN 처럼 값이 없으면 NULL 값으로 채워준다.
+			
+
+UNION
+								
+	-- 두개이상의 테이블의 결과를 합쳐서 출력해준다
+	-- 성능적으로 좋지 못해서 잘 사용하지않음 정말 가끔 사용함
+
+	예)
+		SELECT D.DNAME , AVG(SAL) AVG_S 
+		FROM EMP E 
+		INNER JOIN DEPT D ON E.DEPTNO = D.DEPTNO 
+		GROUP BY  D.DNAME
+
+		UNION
+
+		SELECT '전체', AVG(SAL)   -- 행에 '전체'라고 해줘야 DNAME 열에 들어갈수있다.
+		FROM EMP E 
+		;
+
+MINUS
+                            
+     -- 위에서 나온 데이터 기준으로 중복 되는값을 지워버림
+     -- 차집합
+	 
+    예)                        
+		SELECT STU_NO, STU_NAME, STU_GENDER
+		FROM STUDENT
+		WHERE STU_HEIGHT >= 160
+
+		MINUS
+
+		SELECT STU_NO, STU_NAME , STU_GENDER
+		FROM STUDENT
+		WHERE STU_GENDER = 'M' 
+		;
+		
+LISTAGG
+                            
+    -- 원하는 컬럼 안에 값을 뽑아내는 것
+    -- GROUP BY 랑 같이 쓰면 좋음
+	
+	예)
+		SELECT DEPTNO, LISTAGG(ENAME, ',')
+		FROM EMP
+		GROUP BY DEPTNO;
+		
+MERGE
+	
+	MERGE
+	INTO [테이블]
+	USING DUAL
+	ON ( 조건문 )
+	WHEN MATCHED THEN
+		[DML문]
+	WHEN NOT MATCHED THEN
+		[DML문]
